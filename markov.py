@@ -34,16 +34,6 @@ def make_text(chains):
     # Taking the dictionary created in make_chains. We need to start somewhere (?) random and select a key
     # Now that we have a key, we'll select a random value 
     # Using a while loop to control the length of our output string
-    """ 
-    # Use a while loop to control the length
-    While len(output) < 10: 
-    # We want a list of keys so that we can choose one at random
-    key_list = #get list of keys
-    print key_list
-    # we are creating a random index number to grab a tuple from key_list
-    start = key_list[randint(0, len(key_list))]
-    print start
-    """
     target_string_length = 140
     """ to randomly select a starting point, we'll create a list of keys from the dictionary
     Then we'll select a random index number from 0 to len(the key list)-1. Then we'll assign the tuple
@@ -90,15 +80,31 @@ def make_text(chains):
     #print values
     #print next_word
     #print output_list
-    print counter
-    output_str = " ".join(output_list)
-    return output_str
+    #print counter
+    return output_list
 
 # The scrubber function will take the output of make_text (string? list?)
 # and truncate at the last . or ! or ?
 # It will return the string that will be printed out in the main function
 def scrubber(make_text_output):
-    pass
+    #take the list and clean it up, cut fragment sentence up to last punctuation
+    #going backwards through each item in make_text_output list
+    print make_text_output
+    if "." in "".join(make_text_output):    
+        for each in make_text_output[::-1]:
+            #if statement will check list item for character
+            if not "." in each:
+                make_text_output.pop()
+            else:
+                break
+    else:
+        make_text_output[-1] = make_text_output[-1]+"."  
+    for i in range(0, len(make_text_output)):
+        if "(" in make_text_output[i] or ")" in make_text_output[i]:
+            make_text_output[i] = make_text_output[i].strip(")(")         
+    #take list and make string
+    string_text = " ".join(make_text_output)
+    return string_text
 def main():
     args = sys.argv
     # args produces a list containing the script
@@ -115,7 +121,8 @@ def main():
     #below will call the function make_chains()
     chain_dict = make_chains(input_text)
     random_text = make_text(chain_dict)
-    print random_text
+    finished_text = scrubber(random_text)
+    print finished_text
 
 if __name__ == "__main__":
     main()
