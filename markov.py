@@ -44,8 +44,16 @@ def make_text(chains):
     start = key_list[randint(0, len(key_list))]
     print start
     """
+    target_string_length = 140
+    """ to randomly select a starting point, we'll create a list of keys from the dictionary
+    Then we'll select a random index number from 0 to len(the key list)-1. Then we'll assign the tuple
+    from the list to a start variable. Then we'll get the values from the dictionary using that start variable
+    """
     #for now a tuple key place to start in dict
-    start = ('Hey', 'Jude')
+    key_list = chains.keys()
+    random_index = randint(0, len(key_list)-1)
+    #this gives us a tuple value from our dict to use to start the 
+    start = key_list[random_index]
     #checking dict to see if our start tuple exists returns list of values from that key if it does exist
     #need an if statement if tuple doesn't exist in dict
     values = chains.get(start)
@@ -57,15 +65,40 @@ def make_text(chains):
     #now we put the next_word together with the tupal we started with in a list format so we can still add to it
     output_list = [start[0], start[1], next_word] 
     counter = len(" ".join(output_list))
-    print counter
+    # We'll use a while loop set to end when the counter reaches target_string_length.
+    # Utilizing the last two elements of output_list as our "start", we'll grab a random 
+    # value from start's values. 
+    # append the random word from start's values to output_list. 
+    while counter < target_string_length:
+        new_start = (output_list[-2], output_list[-1])
+        if chains.get(new_start):
+            new_values = chains.get(new_start)
+            new_random_index = randint(0, len(new_values)-1)
+            new_next_word = chains[new_start][new_random_index]
+            output_list.append(new_next_word)
+            #print output_list
+            counter = len(" ".join(output_list))
+        else:
+            print "tuple did not exist! error" 
+            break       
+        # 
+    #print counter
     #eventually we're going to create a while loop to control length of output characters but first we need string
 
-    print random_index
+    #print random_index
 
-    print values
-    print next_word
-    print output_list
-    return "This is a random text"
+    #print values
+    #print next_word
+    #print output_list
+    print counter
+    output_str = " ".join(output_list)
+    return output_str
+
+# The scrubber function will take the output of make_text (string? list?)
+# and truncate at the last . or ! or ?
+# It will return the string that will be printed out in the main function
+def scrubber(make_text_output):
+    pass
 def main():
     args = sys.argv
     # args produces a list containing the script
