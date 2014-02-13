@@ -59,18 +59,16 @@ def make_text(chains):
     # Utilizing the last two elements of output_list as our "start", we'll grab a random 
     # value from start's values. 
     # append the random word from start's values to output_list. 
-    while counter < target_string_length:
+    new_start = (output_list[-2], output_list[-1])
+    while counter < target_string_length and chains.get(new_start):
+        new_values = chains.get(new_start)
+        new_random_index = randint(0, len(new_values)-1)
+        new_next_word = chains[new_start][new_random_index]
+        output_list.append(new_next_word)
+        #print output_list
+        counter = len(" ".join(output_list))
         new_start = (output_list[-2], output_list[-1])
-        if chains.get(new_start):
-            new_values = chains.get(new_start)
-            new_random_index = randint(0, len(new_values)-1)
-            new_next_word = chains[new_start][new_random_index]
-            output_list.append(new_next_word)
-            #print output_list
-            counter = len(" ".join(output_list))
-        else:
-            print "tuple did not exist! error" 
-            break       
+ 
         # 
     #print counter
     #eventually we're going to create a while loop to control length of output characters but first we need string
