@@ -83,28 +83,48 @@ def make_text(chains):
     #print counter
     return output_list
 
+def remove_parens(working_list):
+    for i in range(0, len(working_list)):
+        if "(" in working_list[i] or ")" in working_list[i]:
+            working_list[i] = working_list[i].strip(")(") 
+    return working_list
+def trim_end(working_list):
+    if "." in "".join(working_list):    
+        for each in working_list[::-1]:
+            #if statement will check list item for character
+            if not "." in each:
+                working_list.pop()
+            else:
+                break
+    else:
+        working_list[-1] = working_list[-1]+"."
+    return working_list  
+def deal_with_upper(working_list):
+    #first remove all capitals with exception for I
+    for i in range(0,len(working_list)):
+        if not working_list[i] in ["I","I'll","I've","I'm"]:
+            working_list[i] = working_list[i].lower()
+    working_list[0] = working_list[0].title()
+    for i in range(0,len(working_list)-1):
+        if "." in working_list[i]:
+            working_list[i+1] = working_list[i+1].title()
+
+
+    return working_list
+
 # The scrubber function will take the output of make_text (string? list?)
 # and truncate at the last . or ! or ?
 # It will return the string that will be printed out in the main function
 def scrubber(make_text_output):
     #take the list and clean it up, cut fragment sentence up to last punctuation
     #going backwards through each item in make_text_output list
-    print make_text_output
-    if "." in "".join(make_text_output):    
-        for each in make_text_output[::-1]:
-            #if statement will check list item for character
-            if not "." in each:
-                make_text_output.pop()
-            else:
-                break
-    else:
-        make_text_output[-1] = make_text_output[-1]+"."  
-    for i in range(0, len(make_text_output)):
-        if "(" in make_text_output[i] or ")" in make_text_output[i]:
-            make_text_output[i] = make_text_output[i].strip(")(")         
-    #take list and make string
-    string_text = " ".join(make_text_output)
+    removed = remove_parens(make_text_output)
+    trimmed = trim_end(removed)
+    case_fixed = deal_with_upper(trimmed)
+
+    string_text = " ".join(case_fixed)
     return string_text
+
 def main():
     args = sys.argv
     # args produces a list containing the script
