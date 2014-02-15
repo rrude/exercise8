@@ -104,10 +104,10 @@ def deal_with_upper(working_list):
     for i in range(0,len(working_list)):
         if not working_list[i] in ["I","I'll","I've","I'm"]:
             working_list[i] = working_list[i].lower()
-    working_list[0] = working_list[0].title()
+    working_list[0] = working_list[0].capitalize()
     for i in range(0,len(working_list)-1):
         if "." in working_list[i]:
-            working_list[i+1] = working_list[i+1].title()
+            working_list[i+1] = working_list[i+1].capitalize()
 
 
     return working_list
