@@ -2,6 +2,8 @@
 
 import sys
 from random import randint
+import os
+import twitter 
 
 
 def make_chains(corpus):
@@ -34,7 +36,7 @@ def make_text(chains):
     # Taking the dictionary created in make_chains. We need to start somewhere (?) random and select a key
     # Now that we have a key, we'll select a random value 
     # Using a while loop to control the length of our output string
-    target_string_length = 140
+    target_string_length = 135
     """ to randomly select a starting point, we'll create a list of keys from the dictionary
     Then we'll select a random index number from 0 to len(the key list)-1. Then we'll assign the tuple
     from the list to a start variable. Then we'll get the values from the dictionary using that start variable
@@ -140,7 +142,21 @@ def main():
     chain_dict = make_chains(input_text)
     random_text = make_text(chain_dict)
     finished_text = scrubber(random_text)
-    print finished_text
+    confirm_tweet(finished_text)
+    
+    
+
+def confirm_tweet(potential_text):
+    print potential_text
+    print len(potential_text)
+    confirmation = raw_input("accept text? Y or N: ")
+    if confirmation == "Y":
+        api = twitter.Api(consumer_key=os.environ.get("CONSUMER_KEY"),
+        consumer_secret=os.environ.get("CONSUMER_SECRET") , 
+        access_token_key=os.environ.get("ACCESS_TOKEN_KEY"), 
+        access_token_secret=os.environ.get("ACCESS_TOKEN_SECRET"))
+        api.PostUpdate(potential_text)
+
 
 if __name__ == "__main__":
     main()
